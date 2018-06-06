@@ -1,0 +1,17 @@
+version: '3.6'
+
+services:
+
+  openldap:
+    image: vladchernikov/openldap
+    volumes:
+      - /var/lib/openldap
+      - ./init:/docker-entrypoint-init
+      - ./slapd.conf:/etc/openldap/slapd.conf
+
+  phpldapadmin:
+    image: dinkel/phpldapadmin
+    links:
+      - openldap
+    ports:
+      - 80:80

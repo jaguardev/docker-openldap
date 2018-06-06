@@ -1,0 +1,5 @@
+# Organizational Role for Directory Manager
+dn: cn=Manager,dc=example,dc=com
+objectClass: organizationalRole
+cn: Manager
+description: Directory Manager

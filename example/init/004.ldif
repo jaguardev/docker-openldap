@@ -1,0 +1,4 @@
+# Organizational Unit for Groups
+dn: ou=Groups,dc=example,dc=com
+objectClass: organizationalUnit
+ou: groups

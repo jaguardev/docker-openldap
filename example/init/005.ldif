@@ -1,0 +1,12 @@
+# Users
+dn: cn=donald,ou=People,dc=example,dc=com
+cn: donald
+sn: Trump
+userpassword: melania
+objectclass: person
+
+dn: cn=melania,ou=People,dc=example,dc=com
+cn: melania
+sn: Trump
+userpassword: donald
+objectclass: person
