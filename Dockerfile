@@ -2,9 +2,7 @@ FROM alpine
 
 VOLUME ["/var/lib/openldap"]
 
-RUN  apk update \
-  && apk add openldap openldap-back-mdb \
-  && rm -rf /var/cache/apk/*
+RUN  apk --no-cache add openldap=2.4.45-r3 openldap-back-mdb
 
 RUN mkdir /run/openldap/ && chmod 777 /run/openldap/
 

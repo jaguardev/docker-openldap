@@ -10,7 +10,9 @@ services:
       - ./slapd.conf:/etc/openldap/slapd.conf
 
   phpldapadmin:
-    image: dinkel/phpldapadmin
+    image: vladchernikov/phpldapadmin
+    volumes:
+      - ./config.php:/etc/phpldapadmin/config.php
     links:
       - openldap
     ports:
