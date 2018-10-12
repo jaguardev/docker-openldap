@@ -1,0 +1,61 @@
+dn: cn=config
+objectClass: olcGlobal
+cn: config
+olcPidFile: /run/openldap/slapd.pid
+olcArgsFile: /run/openldap/slapd.args
+
+dn: cn=module,cn=config
+objectClass: olcModuleList
+cn: module
+olcModulepath: /usr/lib/openldap
+olcModuleLoad: back_mdb.so
+olcModuleLoad: refint.so
+olcModuleLoad: memberof.so
+
+dn: cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: schema
+
+include: file:///etc/openldap/schema/core.ldif
+
+dn: olcBackend=mdb,cn=config
+objectClass: olcBackendConfig
+olcBackend: mdb
+
+dn: olcDatabase=frontend,cn=config
+objectClass: olcDatabaseConfig
+objectClass: olcFrontendConfig
+olcDatabase: frontend
+olcAccess: to * by dn.base="cn=Manager,dc=example,dc=com" manage by self read by anonymous auth
+
+dn: olcDatabase={1}mdb,cn=config
+objectClass: olcDatabaseConfig
+objectClass: olcMdbConfig
+olcDatabase: {1}mdb
+olcSuffix: dc=example,dc=com
+olcRootDN: cn=Manager,dc=example,dc=com
+olcRootPW: secret
+olcDbDirectory: /var/lib/openldap/openldap-data
+olcDbIndex: objectClass eq
+olcDbIndex: memberOf eq
+olcDbIndex: uid eq,sub
+
+dn: olcOverlay={0}memberof,olcDatabase={1}mdb,cn=config
+objectClass: olcConfig
+objectClass: olcMemberOf
+objectClass: olcOverlayConfig
+objectClass: top
+olcOverlay: {0}memberof
+olcMemberOfDangling: ignore
+olcMemberOfRefInt: TRUE
+olcMemberOfGroupOC: groupOfNames
+olcMemberOfMemberAD: member
+olcMemberOfMemberOfAD: memberOf
+
+dn: olcOverlay={1}refint,olcDatabase={1}mdb,cn=config
+objectClass: olcConfig
+objectClass: olcOverlayConfig
+objectClass: olcRefintConfig
+objectClass: top
+olcOverlay: {1}refint
+olcRefintAttribute: memberof member owner

@@ -25,3 +25,7 @@ To execute ```.sh``` scripts or ```.ldif``` files on the first run, add them to 
 ### Volume
 
 To persist data, mount volume to ```/var/lib/openldap```
+
+### Environment variables
+
+To initialize __cn=config__ specify __FORCE_SLAPADD_CN_CONFIG_LDIF_FILE_PATH__ variable. Even if it was previously initialized it will erase existed db on next start

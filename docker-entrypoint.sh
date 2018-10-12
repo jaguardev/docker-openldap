@@ -13,13 +13,32 @@ process_init_file() {
 	echo
 }
 
-if [ ! -d "/var/lib/openldap/openldap-data" ]; then
-  echo "Initializing OpenLDAP..."
-  mkdir /var/lib/openldap/openldap-data
-  for f in /docker-entrypoint-init/*; do
-    process_init_file "$f"
-  done
+INITIALIZED=0
+
+if [ -d "/var/lib/openldap/openldap-data" ]; then
+	INITIALIZED=1
+fi
+
+if [ $INITIALIZED -eq 0 ]; then
+	mkdir /var/lib/openldap/openldap-data
+fi
+
+if [ -n "$FORCE_SLAPADD_CN_CONFIG_LDIF_FILE_PATH" ] && [ -f "$FORCE_SLAPADD_CN_CONFIG_LDIF_FILE_PATH" ]; then
+ 	echo "Configuring OpenLDAP..."
+ 	rm -rf /etc/openldap/slapd.d
+	mkdir /etc/openldap/slapd.d
+ 	/usr/sbin/slapadd -n 0 -F /etc/openldap/slapd.d -l $FORCE_SLAPADD_CN_CONFIG_LDIF_FILE_PATH
+	chown -R ldap:ldap /etc/openldap/slapd.d
+	chmod -R 700 /etc/openldap/slapd.d
+fi
+
+if [ $INITIALIZED -eq 0 ]; then
+	echo "Initializing OpenLDAP..."
+	for f in /docker-entrypoint-init/*; do
+		process_init_file "$f"
+	done
 	chown -R ldap:ldap /var/lib/openldap/openldap-data
+	chmod -R 700 /var/lib/openldap/openldap-data
 fi
 
 exec "$@"
