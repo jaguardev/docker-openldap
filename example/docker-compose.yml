@@ -7,7 +7,6 @@ services:
       - /var/lib/openldap
       - ./init:/docker-entrypoint-init
       - ./slapd.ldif:/etc/openldap/slapd.ldif
-      - ../docker-entrypoint.sh:/docker-entrypoint.sh
     environment:
       - FORCE_SLAPADD_CN_CONFIG_LDIF_FILE_PATH=/etc/openldap/slapd.ldif
 
